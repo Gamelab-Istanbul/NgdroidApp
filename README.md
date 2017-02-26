@@ -1,5 +1,5 @@
 # NgdroidApp
-We teach game programming here in Gamelab Istanbul (http://gamelab.istanbul) and in 2 universities. We created this simple Java framework to use in the classes. Thus, instead of spending time with configuring Android, the students can start to write their game codes.
+We teach game programming here in Gamelab Istanbul (http://gamelab.istanbul) and in 2 universities. We created this simple Java framework to use in the classes. Thus, instead of spending time with configuring Android, the students can start to write their game codes asap.
 
 The framework is an Android Studio project. You can fork and clone it via the Android Studio.
 
