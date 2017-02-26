@@ -1,5 +1,5 @@
 # NgdroidApp
-We teach game programming here in Gamelab Istanbul (http://gamelab.istanbul) and in 2 universities. We created this simple Java framework to use in the classes. Thus, instead of spending time with configuring Android, the students can start to write their game codes asap.
+I teach game programming here in Gamelab Istanbul (http://gamelab.istanbul) and in 2 universities. I created this simple Java framework to use in my classes. Thus, instead of spending time with configuring Android, the students can start to write their game codes asap.
 
 The framework is an Android Studio project. You can fork it, and then, you can clone your fork into your computer via the Android Studio.
 
@@ -14,7 +14,7 @@ The framework has got;
 
 All you have to do is opening GameCanvas and start coding your game.
 
-The framework is designed in the MVC pattern. If you need to create new classes for your menus and other views, you can simply extend BaseCanvas and set this child canvas as the current canvas.
+The framework is designed in the MVC pattern. If you need to create new classes for your menus and other views, you can simply extend BaseCanvas and set this new child canvas as the current canvas.
 
 When you want to generate your own APK;
 
