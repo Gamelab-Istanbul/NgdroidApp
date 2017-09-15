@@ -28,7 +28,7 @@ There are still a lot of rooms to develop. Contributions are really appreciated.
 
 This framework is licenced with MIT licence.
 
-Installation Note
+Installation Notice
 --------
 
 The NgdroidApp is designed as an Android Studio project. Thus you can clone and open it via your Android Studio. Some users reported that Android Studio could not sometimes open the NgdroidApp project. In this case, close the project via "File->Close Project", select "Open an existing Android Studio project", then find and open the project via project explorer window.
