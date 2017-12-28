@@ -183,27 +183,27 @@ public class GUI {
         return baseapp.getHeight();
     }
 
-    public void touchDown(int x, int y, boolean onlyDialogue) {
+    public void touchDown(int x, int y, int id, boolean onlyDialogue) {
         if (!objects.isEmpty()) {
             for (int i=0; i<objects.size(); i++) {
                 if (objects.elementAt(i).isVisible() && objects.elementAt(i).isActive() && !(isdialogueshown && onlyDialogue && (objects.elementAt(i).getObjectType() != OBJTYPE_DIALOGUE && objects.elementAt(i).getObjectType() != OBJTYPE_NOTIFICATION))) {
-                    objects.elementAt(i).touchDown(x, y);
+                    objects.elementAt(i).touchDown(x, y, id);
                 }
             }
         }
     }
 
-    public void touchMove(int x, int y, boolean onlyDialogue) {
+    public void touchMove(int x, int y, int id, boolean onlyDialogue) {
         if (!objects.isEmpty()) {
             for (int i=0; i<objects.size(); i++) {
                 if (objects.elementAt(i).isVisible() && objects.elementAt(i).isActive() && !(isdialogueshown && onlyDialogue && (objects.elementAt(i).getObjectType() != OBJTYPE_DIALOGUE && objects.elementAt(i).getObjectType() != OBJTYPE_NOTIFICATION))) {
-                    objects.elementAt(i).touchMove(x, y);
+                    objects.elementAt(i).touchMove(x, y, id);
                 }
             }
         }
     }
 
-    public void touchUp(int x, int y, boolean onlyDialogue) {
+    public void touchUp(int x, int y, int id, boolean onlyDialogue) {
         if (!objects.isEmpty()) {
             for (int i=objects.size()-1; i>=0; i--) {
                 if ((objects.elementAt(i).getObjectType() == OBJTYPE_DIALOGUE || objects.elementAt(i).getObjectType() == OBJTYPE_NOTIFICATION) && objects.elementAt(i).isVisible() && objects.elementAt(i).isHideWhenOutClick()) {
@@ -219,7 +219,7 @@ public class GUI {
 //                    Log.i("GUI", "touchUp 2, objId:" + objects.elementAt(i).getId() + ", iV:" + objects.elementAt(i).isVisible() + ", iA:" + objects.elementAt(i).isActive());
 //                }
                 if (objects.elementAt(i).isVisible() && objects.elementAt(i).isActive() && !(isdialogueshown && onlyDialogue && (objects.elementAt(i).getObjectType() != OBJTYPE_DIALOGUE && objects.elementAt(i).getObjectType() != OBJTYPE_NOTIFICATION))) {
-                    objects.elementAt(i).touchUp(x, y);
+                    objects.elementAt(i).touchUp(x, y, id);
 //                    break;
                 }
             }

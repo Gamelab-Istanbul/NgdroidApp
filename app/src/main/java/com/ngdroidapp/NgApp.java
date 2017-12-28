@@ -24,7 +24,7 @@ public class NgApp extends BaseApp {
         appManager.setUnitResolution(AppManager.RESOLUTION_QHD);
         appManager.setFrameRateTarget(20);
 
-        InitialisationCanvas mc = new InitialisationCanvas(this);
+        MenuCanvas mc = new MenuCanvas(this);
         canvasManager.setCurrentCanvas(mc);
     }
 
@@ -49,15 +49,15 @@ public class NgApp extends BaseApp {
         return true;
     }
 
-    public void touchDown(int x, int y) {
+    public void touchDown(int x, int y, int id) {
 
     }
 
-    public void touchMove(int x, int y) {
+    public void touchMove(int x, int y, int id) {
 
     }
 
-    public void touchUp(int x, int y) {
+    public void touchUp(int x, int y, int id) {
 
     }
 
