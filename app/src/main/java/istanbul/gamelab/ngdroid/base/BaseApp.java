@@ -36,9 +36,9 @@ public abstract class BaseApp {
     public abstract void keyReleased(int key);
     public abstract boolean backPressed();
 
-    public abstract void touchDown(int x, int y);
-    public abstract void touchMove(int x, int y);
-    public abstract void touchUp(int x, int y);
+    public abstract void touchDown(int x, int y, int id);
+    public abstract void touchMove(int x, int y, int id);
+    public abstract void touchUp(int x, int y, int id);
 
     public abstract void surfaceChanged(int width, int height);
     public abstract void surfaceCreated();

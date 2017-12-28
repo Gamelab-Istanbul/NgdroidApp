@@ -23,8 +23,6 @@ public class GameCanvas extends BaseCanvas {
         Log.i(TAG, "setup");
     }
 
-
-
     public void update() {
         Log.i(TAG, "update");
     }
@@ -57,13 +55,13 @@ public class GameCanvas extends BaseCanvas {
 
     }
 
-    public void touchDown(int x, int y) {
+    public void touchDown(int x, int y, int id) {
     }
 
-    public void touchMove(int x, int y) {
+    public void touchMove(int x, int y, int id) {
     }
 
-    public void touchUp(int x, int y) {
+    public void touchUp(int x, int y, int id) {
     }
 
 

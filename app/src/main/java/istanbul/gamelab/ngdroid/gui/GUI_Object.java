@@ -259,11 +259,11 @@ public abstract class GUI_Object {
         }
     }
 
-    public abstract void touchDown(int x, int y);
+    public abstract void touchDown(int x, int y, int id);
 
-    public abstract void touchMove(int x, int y);
+    public abstract void touchMove(int x, int y, int id);
 
-    public abstract void touchUp(int x, int y);
+    public abstract void touchUp(int x, int y, int id);
 
     public int getId() {
         return objectid;

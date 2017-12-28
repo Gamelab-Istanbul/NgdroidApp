@@ -33,7 +33,10 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
     private CanvasManager canvasmanager;
     private boolean initialstart;
     private int state, screenwidth, screenheight, screenwidthhalf, screenheighthalf;
-    private int resolution, unitresolution, tx, ty;
+    private int resolution, unitresolution;
+    private int max_touch_num, touch_oldx[], touch_oldy[];
+    private int touch_num, touch_x, touch_y, touch_index, touch_id, touch_action;
+    private int tmoi, tmoid, tmox, tmoy;
     public int scaleresmult, scaleresdiv, scaleresmultunit, scaleresdivunit;
 
     public AppManager(BaseActivity baseActivity) {
@@ -48,6 +51,9 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
         setupScreenSize(baseActivity);
         setupScreenResolution(screenwidth, screenheight);
         setUnitResolution(0);
+        max_touch_num = 10;
+        touch_oldx = new int[max_touch_num];
+        touch_oldy = new int[max_touch_num];
 
         ngapp = new NgApp(baseActivity, this);
         canvasmanager = ngapp.canvasManager;
@@ -268,41 +274,68 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        tx = (int)event.getX();
-        ty = (int)event.getY();
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (ngapp.gui.isInitialized() && ngapp.gui.isDialogueShown()) {
-                ngapp.gui.touchDown(tx, ty, true);
-            } else {
-                if (!ngapp.gui.isInitialized() || !ngapp.gui.isDialogueShown()) {
-                    if (canvasmanager.isCanvasShown()) canvasmanager.currentCanvas.touchDown(tx, ty);
-                    else ngapp.touchDown(tx, ty);
+        touch_num = event.getPointerCount();
+        if (touch_num >= max_touch_num) return true;
+        touch_action = event.getActionMasked();
+
+        switch(touch_action) {
+            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_POINTER_DOWN:
+                touch_index = event.getActionIndex();
+                touch_id = event.getPointerId(touch_index);
+                touch_x = (int)event.getX(touch_index);
+                touch_y = (int)event.getY(touch_index);
+                touch_oldx[touch_id] = touch_x;
+                touch_oldy[touch_id] = touch_y;
+                if (ngapp.gui.isInitialized() && ngapp.gui.isDialogueShown()) {
+                    ngapp.gui.touchDown(touch_x, touch_y, touch_id, true);
+                } else {
+                    if (!ngapp.gui.isInitialized() || !ngapp.gui.isDialogueShown()) {
+                        if (canvasmanager.isCanvasShown()) canvasmanager.currentCanvas.touchDown(touch_x, touch_y, touch_id);
+                        else ngapp.touchDown(touch_x, touch_y, touch_id);
+                    }
+                    if (ngapp.gui.isInitialized() && !ngapp.gui.isDialogueShown()) ngapp.gui.touchDown(touch_x, touch_y, touch_id, false);
                 }
-                if (ngapp.gui.isInitialized() && !ngapp.gui.isDialogueShown()) ngapp.gui.touchDown(tx, ty, false);
-            }
-            return true;
-        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            if (ngapp.gui.isInitialized() && ngapp.gui.isDialogueShown()) {
-                ngapp.gui.touchMove(tx, ty, true);
-            } else {
-                if (!ngapp.gui.isInitialized() || !ngapp.gui.isDialogueShown()) {
-                    if (canvasmanager.isCanvasShown()) canvasmanager.currentCanvas.touchMove(tx, ty);
-                    else ngapp.touchMove(tx, ty);
+                return true;
+            case MotionEvent.ACTION_MOVE:
+                for (tmoi = 0; tmoi < touch_num; tmoi++) {
+                    tmoid = event.getPointerId(tmoi);
+                    tmox = (int)event.getX(tmoi);
+                    tmoy = (int)event.getY(tmoi);
+                    if (tmox != touch_oldx[tmoid] && tmoy != touch_oldy[tmoid]) {
+                        if (ngapp.gui.isInitialized() && ngapp.gui.isDialogueShown()) {
+                            ngapp.gui.touchMove(tmox, tmoy, tmoid, true);
+                        } else {
+                            if (!ngapp.gui.isInitialized() || !ngapp.gui.isDialogueShown()) {
+                                if (canvasmanager.isCanvasShown()) canvasmanager.currentCanvas.touchMove(tmox, tmoy, tmoid);
+                                else ngapp.touchMove(tmox, tmoy, tmoid);
+                            }
+                            if (ngapp.gui.isInitialized() && !ngapp.gui.isDialogueShown()) ngapp.gui.touchMove(tmox, tmoy, tmoid, false);
+                        }
+
+                        touch_oldx[tmoid] = tmox;
+                        touch_oldy[tmoid] = tmoy;
+                    }
                 }
-                if (ngapp.gui.isInitialized() && !ngapp.gui.isDialogueShown()) ngapp.gui.touchMove(tx, ty, false);
-            }
-            return true;
-        } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            if (ngapp.gui.isInitialized() && ngapp.gui.isDialogueShown()) {
-                ngapp.gui.touchUp(tx, ty, true);
-            } else {
-                if (!ngapp.gui.isInitialized() || !ngapp.gui.isDialogueShown()) {
-                    if (canvasmanager.isCanvasShown()) canvasmanager.currentCanvas.touchUp(tx, ty);
-                    else ngapp.touchUp(tx, ty);
+                return true;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_POINTER_UP:
+                touch_index = event.getActionIndex();
+                touch_id = event.getPointerId(touch_index);
+                touch_x = (int)event.getX(touch_index);
+                touch_y = (int)event.getY(touch_index);
+                if (ngapp.gui.isInitialized() && ngapp.gui.isDialogueShown()) {
+                    ngapp.gui.touchUp(touch_x, touch_y, touch_id, true);
+                } else {
+                    if (!ngapp.gui.isInitialized() || !ngapp.gui.isDialogueShown()) {
+                        if (canvasmanager.isCanvasShown()) canvasmanager.currentCanvas.touchUp(touch_x, touch_y, touch_id);
+                        else ngapp.touchUp(touch_x, touch_y, touch_id);
+                    }
+                    if (ngapp.gui.isInitialized() && !ngapp.gui.isDialogueShown()) ngapp.gui.touchUp(touch_x, touch_y, touch_id, false);
                 }
-                if (ngapp.gui.isInitialized() && !ngapp.gui.isDialogueShown()) ngapp.gui.touchUp(tx, ty, false);
-            }
-            return true;
+                return true;
+            default:
+                break;
         }
         return super.onTouchEvent(event);
     }

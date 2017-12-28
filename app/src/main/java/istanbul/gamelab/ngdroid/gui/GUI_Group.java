@@ -74,31 +74,31 @@ public class GUI_Group extends GUI_Object {
         }
     }
 
-    public void touchDown(int x, int y) {
+    public void touchDown(int x, int y, int id) {
         if (!objects.isEmpty()) {
             for (int i=0; i<objects.size(); i++) {
                 if (objects.elementAt(i).isVisible() && objects.elementAt(i).isActive()) {
-                    objects.elementAt(i).touchDown(x, y);
+                    objects.elementAt(i).touchDown(x, y, id);
                 }
             }
         }
     }
 
-    public void touchMove(int x, int y) {
+    public void touchMove(int x, int y, int id) {
         if (!objects.isEmpty()) {
             for (int i=0; i<objects.size(); i++) {
                 if (objects.elementAt(i).isVisible() && objects.elementAt(i).isActive()) {
-                    objects.elementAt(i).touchMove(x, y);
+                    objects.elementAt(i).touchMove(x, y, id);
                 }
             }
         }
     }
 
-    public void touchUp(int x, int y) {
+    public void touchUp(int x, int y, int id) {
         if (!objects.isEmpty()) {
             for (int i=0; i<objects.size(); i++) {
                 if (objects.elementAt(i).isVisible() && objects.elementAt(i).isActive()) {
-                    objects.elementAt(i).touchUp(x, y);
+                    objects.elementAt(i).touchUp(x, y, id);
                 }
             }
         }
