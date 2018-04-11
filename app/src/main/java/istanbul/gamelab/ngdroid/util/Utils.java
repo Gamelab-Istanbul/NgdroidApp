@@ -23,10 +23,10 @@ import java.util.Vector;
 public class Utils {
 
 
-    public static Bitmap loadImage(NgApp ngApp, String assetFilepath) {
+    public static Bitmap loadImage(NgApp ngApp, String imagePath) {
         Bitmap image;
         try {
-            InputStream istr = ngApp.activity.getAssets().open(assetFilepath);
+            InputStream istr = ngApp.activity.getAssets().open("images/" + imagePath);
             image = BitmapFactory.decodeStream(istr);
         } catch(IOException ex) {
             return null;

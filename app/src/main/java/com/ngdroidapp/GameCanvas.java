@@ -1,9 +1,11 @@
 package com.ngdroidapp;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import istanbul.gamelab.ngdroid.base.BaseCanvas;
 import istanbul.gamelab.ngdroid.util.Log;
+import istanbul.gamelab.ngdroid.util.Utils;
 
 
 /**
@@ -14,6 +16,9 @@ import istanbul.gamelab.ngdroid.util.Log;
 
 public class GameCanvas extends BaseCanvas {
 
+    private Bitmap logo;
+    private int logox, logoy, logow, logoh;
+
 
     public GameCanvas(NgApp ngApp) {
         super(ngApp);
@@ -21,6 +26,10 @@ public class GameCanvas extends BaseCanvas {
 
     public void setup() {
         Log.i(TAG, "setup");
+
+        logo = Utils.loadImage(root,"gamelab-istanbul_logo.png");
+        logow = logo.getWidth();
+        logoh = logo.getHeight();
     }
 
     public void update() {
@@ -29,6 +38,10 @@ public class GameCanvas extends BaseCanvas {
 
     public void draw(Canvas canvas) {
         Log.i(TAG, "draw");
+
+        logox = (getWidth() - logow) / 2;
+        logoy = (getHeight() - logoh) / 2;
+        canvas.drawBitmap(logo, logox, logoy, null);
     }
 
     public void keyPressed(int key) {
