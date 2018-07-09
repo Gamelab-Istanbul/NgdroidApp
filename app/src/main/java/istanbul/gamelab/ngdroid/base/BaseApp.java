@@ -25,6 +25,7 @@ public abstract class BaseApp {
         this.appManager = appManager;
         canvasManager = new CanvasManager();
         gui = new GUI();
+        gui.initialize(this);
         soundManager = new SoundManager(this);
     }
 
