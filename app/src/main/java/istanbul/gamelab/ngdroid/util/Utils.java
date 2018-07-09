@@ -34,6 +34,30 @@ public class Utils {
         return image;
     }
 
+    
+    /**
+     * Checks if 2 Android Rect objects are colliding or not.
+     *
+     * @param rect1 The first Rect object
+     * @param rect2 The second Rect object
+     */
+    public static boolean checkCollision(Rect rect1, Rect rect2) {
+        return checkCollision(rect1.left, rect1.top, rect1.right, rect1.bottom, rect2.left, rect2.top, rect2.right, rect2.bottom);
+    }
+
+    
+    /**
+     * Checks if 2 rectangles are colliding or not. Thanks to @efecekirge for the algorithm of the method.
+     *
+     * @param rect1 The first rectangle
+     * @param rect2 The second rectangle
+     */
+    public static boolean checkCollision(int xLeft1, int yUp1, int xRight1, int yBottom1, int xLeft2, int yUp2, int xRight2, int yBottom2) {
+        if(xLeft1 < xRight2 && xRight1 > xLeft2 && yBottom1 > yUp2 && yUp1 < yBottom2) {
+            return true;
+        }
+        return false;
+    }
 
 
     private static String getCountrySim(NgApp ngApp) {
