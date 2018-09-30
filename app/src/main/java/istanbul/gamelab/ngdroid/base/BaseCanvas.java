@@ -57,6 +57,11 @@ public abstract class BaseCanvas {
         return root.appManager.getScreenHeightHalf();
     }
 
+    /**
+     * Writes information log on the console.
+     *
+     * @param msg Message to write
+     */
     protected void LOGI(String msg) {
         Log.i(TAG, msg);
     }
