@@ -1,5 +1,10 @@
 language: android
-android:
+
+before_install:
+ - chmod +x gradlew
+ - yes | sdkmanager "platforms;android-28"
+ 
+ android:
   components:
     # Uncomment the lines below if you want to
     # use the latest revision of Android SDK Tools
@@ -23,5 +28,3 @@ android:
     # - sys-img-armeabi-v7a-android-25
     # - sys-img-armeabi-v7a-android-17
 
-before_install:
- - chmod +x gradlew
