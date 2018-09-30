@@ -71,15 +71,7 @@ public abstract class BaseApp {
         Log.i(TAG, msg);
     }
 
-/*
-    public Activity getActivity() {
-        return activity;
+    protected int getNum(int number) {
+        return appManager.getNum(number);
     }
-    public NitraAppManager getAppManager() {
-        return appManager;
-    }
-    public CanvasManager getCanvasManager() {
-        return canvasManager;
-    }
-*/
 }

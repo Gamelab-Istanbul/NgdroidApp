@@ -60,4 +60,8 @@ public abstract class BaseCanvas {
     protected void LOGI(String msg) {
         Log.i(TAG, msg);
     }
+
+    protected int getNum(int number) {
+        return root.appManager.getNum(number);
+    }
 }
