@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 
 import com.ngdroidapp.NgApp;
 
+import istanbul.gamelab.ngdroid.util.Log;
 
 /**
  * Created by noyan on 24.06.2016.
@@ -54,5 +55,9 @@ public abstract class BaseCanvas {
     }
     public int getHeightHalf() {
         return root.appManager.getScreenHeightHalf();
+    }
+
+    protected void LOGI(String msg) {
+        Log.i(TAG, msg);
     }
 }
