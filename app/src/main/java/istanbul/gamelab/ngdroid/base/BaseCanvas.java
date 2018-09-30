@@ -66,6 +66,13 @@ public abstract class BaseCanvas {
         Log.i(TAG, msg);
     }
 
+    /**
+     * Takes a screen coordinate in the unit resolution and calculates a screen coordinate
+     * proportional to current resolution
+     *
+     * @param number int coordinate in unit resolution
+     * @return int coordinate in current resolution
+     */
     protected int getNum(int number) {
         return root.appManager.getNum(number);
     }
