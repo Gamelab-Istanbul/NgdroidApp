@@ -50,6 +50,7 @@ public abstract class BaseCanvas {
     public int getHeight() {
         return root.appManager.getScreenHeight();
     }
+
     public int getWidthHalf() {
         return root.appManager.getScreenWidthHalf();
     }
