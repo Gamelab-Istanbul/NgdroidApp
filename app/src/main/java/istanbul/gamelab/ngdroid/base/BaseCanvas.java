@@ -74,7 +74,7 @@ public abstract class BaseCanvas {
      * @param number int coordinate in unit resolution
      * @return int coordinate in current resolution
      */
-    protected int getNum(int number) {
-        return root.appManager.getNum(number);
+    protected int scaleNum(int number) {
+        return root.appManager.scaleNum(number);
     }
 }

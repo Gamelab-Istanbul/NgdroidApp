@@ -83,7 +83,7 @@ public abstract class BaseApp {
      * @param number int coordinate in unit resolution
      * @return int coordinate in current resolution
      */
-    protected int getNum(int number) {
-        return appManager.getNum(number);
+    protected int scaleNum(int number) {
+        return appManager.scaleNum(number);
     }
 }
