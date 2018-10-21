@@ -130,7 +130,7 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
         return unitresolution;
     }
 
-    public int getNum(int unitNumber) {
+    public int scaleNum(int unitNumber) {
         return (unitNumber * scaleresdivunit * scaleresmult) / (scaleresmultunit * scaleresdiv);
     }
 
