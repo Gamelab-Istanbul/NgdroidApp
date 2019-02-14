@@ -194,20 +194,20 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         Log.i("NAM", "surfaceDestroyed");
-        ngapp.surfaceDestroyed();
-        if (canvasmanager.isCanvasShown()) canvasmanager.currentCanvas.surfaceDestroyed();
-        System.exit(0);
-/*
-        boolean retry = true;
+        //ngapp.surfaceDestroyed();
+        //if (canvasmanager.isCanvasShown()) canvasmanager.currentCanvas.surfaceDestroyed();
+        //System.exit(0);
+
+        boolean retry = thread != null;
         while (retry) {
             try {
-                thread.join();
+                thread.setRunning(false);
+                thread.join(10);
                 retry = false;
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 // try again shutting down the thread
             }
         }
-*/
     }
 
     public void onPause() {
@@ -244,6 +244,7 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
 
             ngapp.gui.reset();
             if (canvasmanager.isCanvasShown()) canvasmanager.currentCanvas.showNotify();
+            thread = new MainThread(getHolder(), this);
             thread.setRunning(true);
             state = STATE_RUNNING;
 

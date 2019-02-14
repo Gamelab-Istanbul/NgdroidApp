@@ -24,7 +24,15 @@ public class MainThread extends Thread {
     private long starttime, endtime, endtime2, timediff, timediff2, millisecondsperframe;
 
     public void setRunning(boolean running) {
-        this.running = running;
+        synchronized (this) {
+            this.running = running;
+        }
+    }
+
+    public boolean getIsRunning() {
+        synchronized(this) {
+            return this.running;
+        }
     }
 
     public MainThread(SurfaceHolder surfaceHolder, AppManager appManager) {
