@@ -6,6 +6,7 @@ import istanbul.gamelab.ngdroid.core.AppManager;
 import istanbul.gamelab.ngdroid.core.CanvasManager;
 import istanbul.gamelab.ngdroid.core.SoundManager;
 import istanbul.gamelab.ngdroid.gui.GUI;
+import istanbul.gamelab.ngdroid.util.Log;
 
 /**
  * Created by noyan on 24.06.2016.
@@ -18,6 +19,8 @@ public abstract class BaseApp {
     public CanvasManager canvasManager;
     public GUI gui;
     public SoundManager soundManager;
+
+    protected final String TAG = this.getClass().getSimpleName();
 
 
     public BaseApp(BaseActivity nitraBaseActivity, AppManager appManager) {
@@ -64,15 +67,23 @@ public abstract class BaseApp {
         return appManager.getScreenHeightHalf();
     }
 
-/*
-    public Activity getActivity() {
-        return activity;
+    /**
+     * Writes information log on the console.
+     *
+     * @param msg Message to write
+     */
+    protected void LOGI(String msg) {
+        Log.i(TAG, msg);
     }
-    public NitraAppManager getAppManager() {
-        return appManager;
+
+    /**
+     * Takes a screen coordinate in the unit resolution and calculates a screen coordinate
+     * proportional to current resolution
+     *
+     * @param number int coordinate in unit resolution
+     * @return int coordinate in current resolution
+     */
+    protected int getNum(int number) {
+        return appManager.scaleUnitNum(number);
     }
-    public CanvasManager getCanvasManager() {
-        return canvasManager;
-    }
-*/
 }

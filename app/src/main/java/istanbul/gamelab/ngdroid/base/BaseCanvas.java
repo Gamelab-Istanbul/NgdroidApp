@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 
 import com.ngdroidapp.NgApp;
 
+import istanbul.gamelab.ngdroid.util.Log;
 
 /**
  * Created by noyan on 24.06.2016.
@@ -49,10 +50,35 @@ public abstract class BaseCanvas {
     public int getHeight() {
         return root.appManager.getScreenHeight();
     }
+
     public int getWidthHalf() {
         return root.appManager.getScreenWidthHalf();
     }
     public int getHeightHalf() {
         return root.appManager.getScreenHeightHalf();
+    }
+
+    public int getUnitWidth() { return root.appManager.getWidthUnit();}
+    public int getUnitHeight() { return root.appManager.getHeightUnit();}
+
+
+    /**
+     * Writes information log on the console.
+     *
+     * @param msg Message to write
+     */
+    protected void LOGI(String msg) {
+        Log.i(TAG, msg);
+    }
+
+    /**
+     * Takes a screen coordinate in the unit resolution and calculates a screen coordinate
+     * proportional to current resolution
+     *
+     * @param number int coordinate in unit resolution
+     * @return int coordinate in current resolution
+     */
+    protected int scaleUnitNum(int number) {
+        return root.appManager.scaleUnitNum(number);
     }
 }
