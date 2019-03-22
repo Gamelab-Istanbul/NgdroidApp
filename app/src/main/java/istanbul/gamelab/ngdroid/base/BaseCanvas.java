@@ -58,6 +58,9 @@ public abstract class BaseCanvas {
         return root.appManager.getScreenHeightHalf();
     }
 
+    public int getUnitWidth() { return root.appManager.getWidthUnit();}
+    public int getUnitHeight() { return root.appManager.getHeightUnit();}
+
     /**
      * Writes information log on the console.
      *
