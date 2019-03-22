@@ -105,6 +105,19 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
     };
 
     private void setupScreenResolution(int screenWidth, int screenHeight) {
+        int temp = 0;
+        if (screenwidth > screenHeight) {
+            for (int i=0; i<resolution_sizes.length; i++) {
+                temp = resolution_sizes[i][0];
+                resolution_sizes[i][0] = resolution_sizes[i][1];
+                resolution_sizes[i][1] = temp;
+
+                temp = resolution_multipliers[i][0];
+                resolution_multipliers[i][0] = resolution_multipliers[i][1];
+                resolution_multipliers[i][1] = temp;
+            }
+        }
+
         resolution = 0;
 
         for (int i=0; i<resolution_sizes.length-1; i++) {
@@ -115,6 +128,14 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
 
         scaleresmult = resolution_multipliers[resolution][0];
         scaleresdiv = resolution_multipliers[resolution][1];
+    }
+
+    public int getWidthUnit() {
+        return resolution_sizes[unitresolution][0];
+    }
+
+    public int getHeightUnit() {
+        return resolution_sizes[unitresolution][1];
     }
 
     public void setUnitResolution(int unitResolution) {
