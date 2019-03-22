@@ -54,7 +54,6 @@ public abstract class BaseApp {
     public int getWidth() {
         return appManager.getScreenWidth();
     }
-
     public int getHeight() {
         return appManager.getScreenHeight();
     }
@@ -62,10 +61,12 @@ public abstract class BaseApp {
     public int getWidthHalf() {
         return appManager.getScreenWidthHalf();
     }
-
     public int getHeightHalf() {
         return appManager.getScreenHeightHalf();
     }
+
+    public int getUnitWidth() { return appManager.getWidthUnit();}
+    public int getUnitHeight() { return appManager.getHeightUnit();}
 
     /**
      * Writes information log on the console.
