@@ -176,16 +176,12 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
         return screenheight;
     }
 
-    public void setFrameRateTarget(int frameRate) {
-        thread.setFrameRateTarget(frameRate);
+    public void setFrameRate(int frameRate) {
+        thread.setFrameRate(frameRate);
     }
 
     public int getFrameRate() {
         return thread.getFrameRate();
-    }
-
-    public int getFrameRateTarget() {
-        return thread.getFrameRateTarget();
     }
 
     /**

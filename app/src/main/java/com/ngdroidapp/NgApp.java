@@ -22,7 +22,7 @@ public class NgApp extends BaseApp {
 
     public void setup() {
         appManager.setUnitResolution(AppManager.RESOLUTION_QHD);
-        appManager.setFrameRateTarget(20);
+        appManager.setFrameRate(20);
 
         MenuCanvas mc = new MenuCanvas(this);
         canvasManager.setCurrentCanvas(mc);

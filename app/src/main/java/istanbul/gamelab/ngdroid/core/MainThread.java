@@ -48,12 +48,6 @@ public class MainThread extends Thread {
         timediff2 = endtime2 - starttime;
     }
 
-    @Deprecated
-    public void setFrameRateTarget(int frameRate) {
-        framerate = frameRate;
-        millisecondsperframe = 1000 / framerate;
-    }
-
     public void setFrameRate(int frameRate) {
         framerate = frameRate;
         millisecondsperframe = 1000 / framerate;
@@ -61,11 +55,6 @@ public class MainThread extends Thread {
 
     public int getFrameRate() {
         return (int)(1000 / timediff2);
-    }
-
-    @Deprecated
-    public int getFrameRateTarget() {
-        return framerate;
     }
 
     @Override
