@@ -38,6 +38,7 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
     private int touch_num, touch_x, touch_y, touch_index, touch_id, touch_action;
     private int tmoi, tmoid, tmox, tmoy;
     public int scaleresmult, scaleresdiv, scaleresmultunit, scaleresdivunit;
+    private final Runtime runtime = Runtime.getRuntime();
 
     public AppManager(BaseActivity baseActivity) {
         super(baseActivity);
@@ -185,6 +186,24 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
 
     public int getFrameRateTarget() {
         return thread.getFrameRateTarget();
+    }
+
+    /**
+     * Gets the max memory that Java VM can use in bytes.
+     * Divide the returned number by 1024 for KB and divide it by 1048576 for MB
+     *
+     * @return The max memory Java VM can use
+     */
+    public final long getMaxMemory() {
+        return runtime.maxMemory();
+    }
+
+    public final long getUsedMemory() {
+        return runtime.totalMemory() - runtime.freeMemory();
+    }
+
+    public final long getAvailableMemory() {
+        return getMaxMemory() - getUsedMemory();
     }
 
     public int getState() {
