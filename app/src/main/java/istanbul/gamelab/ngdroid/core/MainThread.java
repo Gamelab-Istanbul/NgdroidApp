@@ -20,7 +20,7 @@ public class MainThread extends Thread {
     private SurfaceHolder surfaceHolder;
     private AppManager appManager;
     public boolean running;
-    private int framerate = 60;
+    private int framerate;
     private long starttime, endtime, endtime2, timediff, timediff2, millisecondsperframe;
 
     public void setRunning(boolean running) {
@@ -39,7 +39,7 @@ public class MainThread extends Thread {
         super();
         this.surfaceHolder = surfaceHolder;
         this.appManager = appManager;
-        //framerate = 60;
+        framerate = 60;
         millisecondsperframe = 1000 / framerate;
         starttime = System.currentTimeMillis();
         endtime = System.currentTimeMillis();
