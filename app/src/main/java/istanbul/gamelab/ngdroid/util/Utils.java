@@ -25,8 +25,10 @@ import java.util.Vector;
 public class Utils {
 
     private static int gcbleft, gcbright, gcbtop, gcbbottom;
-    private static int ppcpixel1, ppcpixel2;
-    private static int ppci, ppcj;
+    private static int cppcpixel1, cppcpixel2;
+    private static int cppci, cppcj;
+    private static Rect cppcoverlap;
+    private static Rect gcbbounds = new Rect();
 
     /**
      * Loads an immutable image from the /assets/images folder.
@@ -87,14 +89,14 @@ public class Utils {
      * @param rect2 The second Rect object
      **/
 
-    public static boolean pixelPerfectCollision(Bitmap image1, Bitmap image2, Rect rect1, Rect rect2) {
-        if(Rect.intersects(rect1, rect2)) {
-            Rect overlap = getCollisionBounds(rect1, rect2);
-            for (ppci = overlap.left; ppci < overlap.right; ppci++) {
-                for (ppcj = overlap.top; ppcj < overlap.bottom; ppcj++) {
-                    ppcpixel1 = image1.getPixel(ppci - rect1.left, ppcj - rect1.top);
-                    ppcpixel2 = image2.getPixel(ppci - rect2.left, ppcj - rect2.top);
-                    if (ppcpixel1 != Color.TRANSPARENT && ppcpixel2 != Color.TRANSPARENT) {
+    public static boolean checkPixelPerfectCollision(Bitmap image1, Bitmap image2, Rect rect1, Rect rect2) {
+        if(checkCollision(rect1, rect2)) {
+            cppcoverlap = getCollisionBounds(rect1, rect2);
+            for (cppci = cppcoverlap.left; cppci < cppcoverlap.right; cppci++) {
+                for (cppcj = cppcoverlap.top; cppcj < cppcoverlap.bottom; cppcj++) {
+                    cppcpixel1 = image1.getPixel(cppci - rect1.left, cppcj - rect1.top);
+                    cppcpixel2 = image2.getPixel(cppci - rect2.left, cppcj - rect2.top);
+                    if (cppcpixel1 != Color.TRANSPARENT && cppcpixel2 != Color.TRANSPARENT) {
                         return true;
                     }
                 }
@@ -114,8 +116,9 @@ public class Utils {
         gcbleft = Math.max(rect1.left, rect2.left);
         gcbtop = Math.max(rect1.top, rect2.top);
         gcbright = Math.min(rect1.right, rect2.right);
-        gcbbottom = Math.min(rect1.bottom, rect2.bottom);;
-        return new Rect(gcbleft, gcbtop, gcbright, gcbbottom);
+        gcbbottom = Math.min(rect1.bottom, rect2.bottom);
+        gcbbounds.set(gcbleft, gcbtop, gcbright, gcbbottom);
+        return gcbbounds;
     }
 
     /**
