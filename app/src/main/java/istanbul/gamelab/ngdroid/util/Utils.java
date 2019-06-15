@@ -1,11 +1,11 @@
 package istanbul.gamelab.ngdroid.util;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Rect;
 //import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
@@ -23,6 +23,10 @@ import java.util.Vector;
  */
 
 public class Utils {
+
+    private static int gcbleft, gcbright, gcbtop, gcbbottom;
+    private static int ppcpixel1, ppcpixel2;
+    private static int ppci, ppcj;
 
     /**
      * Loads an immutable image from the /assets/images folder.
@@ -42,7 +46,7 @@ public class Utils {
         return image;
     }
 
-    
+
     /**
      * Checks if 2 Android Rect objects are colliding or not.
      *
@@ -74,6 +78,45 @@ public class Utils {
         return false;
     }
 
+    /**
+     * Checks pixel perfect collision.
+     *
+     * @param image1 The first Bitmap object
+     * @param image2 The secons Bitmap object
+     * @param rect1 The first Rect object
+     * @param rect2 The second Rect object
+     **/
+
+    public static boolean pixelPerfectCollision(Bitmap image1, Bitmap image2, Rect rect1, Rect rect2) {
+        if(Rect.intersects(rect1, rect2)) {
+            Rect overlap = getCollisionBounds(rect1, rect2);
+            for (ppci = overlap.left; ppci < overlap.right; ppci++) {
+                for (ppcj = overlap.top; ppcj < overlap.bottom; ppcj++) {
+                    ppcpixel1 = image1.getPixel(ppci - rect1.left, ppcj - rect1.top);
+                    ppcpixel2 = image2.getPixel(ppci - rect2.left, ppcj - rect2.top);
+                    if (ppcpixel1 != Color.TRANSPARENT && ppcpixel2 != Color.TRANSPARENT) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns 2 Rect objects overlap.
+     *
+     * @param rect1 The first Rect object
+     * @param rect2 The second Rect object
+     **/
+
+    private static Rect getCollisionBounds(Rect rect1, Rect rect2) {
+        gcbleft = Math.max(rect1.left, rect2.left);
+        gcbtop = Math.max(rect1.top, rect2.top);
+        gcbright = Math.min(rect1.right, rect2.right);
+        gcbbottom = Math.min(rect1.bottom, rect2.bottom);;
+        return new Rect(gcbleft, gcbtop, gcbright, gcbbottom);
+    }
 
     /**
      * Provides the country of the service provider. This is the best method to find out the country of the user.
