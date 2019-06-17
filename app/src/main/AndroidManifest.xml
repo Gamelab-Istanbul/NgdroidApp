@@ -3,7 +3,8 @@
     package="com.mycompany.myngdroidapp"
     android:installLocation="auto">
 
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <supports-screens android:resizeable="false"
         android:smallScreens="false"
