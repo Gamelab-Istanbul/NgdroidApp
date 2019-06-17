@@ -8,6 +8,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
 //import android.support.v7.app.AlertDialog;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.telephony.TelephonyManager;
 
 import com.ngdroidapp.NgApp;
@@ -16,6 +19,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
 import java.util.Vector;
+
+import static android.content.Context.VIBRATOR_SERVICE;
 
 /**
  * Created by noyan on 24.09.2016.
@@ -207,4 +212,18 @@ public class Utils {
                 .create();
     }
 
+    /**
+     * Vibrates android device.
+     *
+     * @param milliseconds vibrates duration
+     * @param amplitude vibrates magnitude
+     * */
+
+    public static void vibrate(NgApp root, int milliseconds, int amplitude) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            ((Vibrator) root.activity.getSystemService(VIBRATOR_SERVICE)).vibrate(VibrationEffect.createOneShot(milliseconds, amplitude));
+        } else {
+            ((Vibrator) root.activity.getSystemService(VIBRATOR_SERVICE)).vibrate(milliseconds);
+        }
+    }
 }
