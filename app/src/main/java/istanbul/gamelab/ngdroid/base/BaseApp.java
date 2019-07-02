@@ -26,7 +26,7 @@ public abstract class BaseApp {
     public BaseApp(BaseActivity nitraBaseActivity, AppManager appManager) {
         this.activity = nitraBaseActivity;
         this.appManager = appManager;
-        canvasManager = new CanvasManager();
+        canvasManager = new CanvasManager(this);
         gui = new GUI();
         gui.initialize(this);
         soundManager = new SoundManager(this);

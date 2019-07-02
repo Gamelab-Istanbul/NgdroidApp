@@ -1,5 +1,6 @@
 package istanbul.gamelab.ngdroid.core;
 
+import istanbul.gamelab.ngdroid.base.BaseApp;
 import istanbul.gamelab.ngdroid.base.BaseCanvas;
 
 /**
@@ -9,13 +10,15 @@ import istanbul.gamelab.ngdroid.base.BaseCanvas;
 
 
 public class CanvasManager {
+    private BaseApp root;
     public BaseCanvas currentCanvas;
     private BaseCanvas tempCanvas;
     int displaychange;
     private static final short DISPLAY_CHANGE_NONE = 0, DISPLAY_CHANGE_CURRENT = 1;
 
-    public CanvasManager() {
+    public CanvasManager(BaseApp baseApp) {
         displaychange = DISPLAY_CHANGE_NONE;
+        root = baseApp;
     }
 
     public void updateDisplay() {
@@ -24,6 +27,7 @@ public class CanvasManager {
                 break;
             case DISPLAY_CHANGE_CURRENT:
                 if (currentCanvas != null) {
+                    root.appManager.enableTouchEvents(false);
                     currentCanvas.hideNotify();
                     currentCanvas = null;
                 }
@@ -31,6 +35,7 @@ public class CanvasManager {
                 tempCanvas = null;
                 currentCanvas.showNotify();
                 currentCanvas.setup();
+                root.appManager.enableTouchEvents(true);
                 displaychange = DISPLAY_CHANGE_NONE;
                 break;
             default:
