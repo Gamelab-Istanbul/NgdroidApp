@@ -32,6 +32,7 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
     private NgApp ngapp;
     private CanvasManager canvasmanager;
     private boolean initialstart;
+    private boolean istoucheventsenabled;
     private int state, screenwidth, screenheight, screenwidthhalf, screenheighthalf;
     private int resolution, unitresolution;
     private int max_touch_num, touch_oldx[], touch_oldy[];
@@ -129,6 +130,10 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
 
         scaleresmult = resolution_multipliers[resolution][0];
         scaleresdiv = resolution_multipliers[resolution][1];
+    }
+
+    public void enableTouchEvents(boolean isEnabled) {
+        istoucheventsenabled = isEnabled;
     }
 
     public int getWidthUnit() {
@@ -328,7 +333,7 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
                     ngapp.gui.touchDown(touch_x, touch_y, touch_id, true);
                 } else {
                     if (!ngapp.gui.isInitialized() || !ngapp.gui.isDialogueShown()) {
-                        if (canvasmanager.isCanvasShown()) canvasmanager.currentCanvas.touchDown(touch_x, touch_y, touch_id);
+                        if (canvasmanager.isCanvasShown() && istoucheventsenabled) canvasmanager.currentCanvas.touchDown(touch_x, touch_y, touch_id);
                         else ngapp.touchDown(touch_x, touch_y, touch_id);
                     }
                     if (ngapp.gui.isInitialized() && !ngapp.gui.isDialogueShown()) ngapp.gui.touchDown(touch_x, touch_y, touch_id, false);
@@ -344,7 +349,7 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
                             ngapp.gui.touchMove(tmox, tmoy, tmoid, true);
                         } else {
                             if (!ngapp.gui.isInitialized() || !ngapp.gui.isDialogueShown()) {
-                                if (canvasmanager.isCanvasShown()) canvasmanager.currentCanvas.touchMove(tmox, tmoy, tmoid);
+                                if (canvasmanager.isCanvasShown() && istoucheventsenabled) canvasmanager.currentCanvas.touchMove(tmox, tmoy, tmoid);
                                 else ngapp.touchMove(tmox, tmoy, tmoid);
                             }
                             if (ngapp.gui.isInitialized() && !ngapp.gui.isDialogueShown()) ngapp.gui.touchMove(tmox, tmoy, tmoid, false);
@@ -365,7 +370,7 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
                     ngapp.gui.touchUp(touch_x, touch_y, touch_id, true);
                 } else {
                     if (!ngapp.gui.isInitialized() || !ngapp.gui.isDialogueShown()) {
-                        if (canvasmanager.isCanvasShown()) canvasmanager.currentCanvas.touchUp(touch_x, touch_y, touch_id);
+                        if (canvasmanager.isCanvasShown() && istoucheventsenabled) canvasmanager.currentCanvas.touchUp(touch_x, touch_y, touch_id);
                         else ngapp.touchUp(touch_x, touch_y, touch_id);
                     }
                     if (ngapp.gui.isInitialized() && !ngapp.gui.isDialogueShown()) ngapp.gui.touchUp(touch_x, touch_y, touch_id, false);
