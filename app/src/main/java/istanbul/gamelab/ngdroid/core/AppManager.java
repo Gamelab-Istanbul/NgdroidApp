@@ -339,7 +339,10 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
                             else ngapp.touchDown(touch_x, touch_y, touch_id);
                         }
                     }
-                    if (ngapp.gui.isInitialized() && !ngapp.gui.isDialogueShown()) ngapp.gui.touchDown(touch_x, touch_y, touch_id, false);
+                    if(istoucheventsenabled) {
+                        if (ngapp.gui.isInitialized() && !ngapp.gui.isDialogueShown())
+                            ngapp.gui.touchDown(touch_x, touch_y, touch_id, false);
+                    }
                 }
                 return true;
             case MotionEvent.ACTION_MOVE:
@@ -358,7 +361,10 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
                                     else ngapp.touchMove(tmox, tmoy, tmoid);
                                 }
                             }
-                            if (ngapp.gui.isInitialized() && !ngapp.gui.isDialogueShown()) ngapp.gui.touchMove(tmox, tmoy, tmoid, false);
+                            if(istoucheventsenabled) {
+                                if (ngapp.gui.isInitialized() && !ngapp.gui.isDialogueShown())
+                                    ngapp.gui.touchMove(tmox, tmoy, tmoid, false);
+                            }
                         }
 
                         touch_oldx[tmoid] = tmox;
@@ -382,7 +388,10 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
                             else ngapp.touchUp(touch_x, touch_y, touch_id);
                         }
                     }
-                    if (ngapp.gui.isInitialized() && !ngapp.gui.isDialogueShown()) ngapp.gui.touchUp(touch_x, touch_y, touch_id, false);
+                    if(istoucheventsenabled) {
+                        if (ngapp.gui.isInitialized() && !ngapp.gui.isDialogueShown())
+                            ngapp.gui.touchUp(touch_x, touch_y, touch_id, false);
+                    }
                 }
                 return true;
             default:
