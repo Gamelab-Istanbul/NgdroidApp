@@ -27,7 +27,7 @@ public class GameCanvas extends BaseCanvas {
     public void setup() {
         LOGI("setup");
 
-        logo = Utils.loadImage(root,"gamelab-istanbul_logo.png");
+        logo = loadImage("gamelab-istanbul_logo.png");
         logow = logo.getWidth();
         logoh = logo.getHeight();
         logox = (getWidth() - logow) / 2;

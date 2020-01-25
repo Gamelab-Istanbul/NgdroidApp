@@ -1,10 +1,12 @@
 package istanbul.gamelab.ngdroid.base;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import com.ngdroidapp.NgApp;
 
 import istanbul.gamelab.ngdroid.util.Log;
+import istanbul.gamelab.ngdroid.util.Utils;
 
 /**
  * Created by noyan on 24.06.2016.
@@ -80,4 +82,12 @@ public abstract class BaseCanvas {
     protected int scaleNum(int number) {
         return root.appManager.scaleNum(number);
     }
+
+
+    protected Bitmap loadImage(String imagePath) {
+        Bitmap newimage;
+        newimage = Utils.loadImage(root, imagePath);
+        return newimage;
+    }
+
 }
