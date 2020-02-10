@@ -72,6 +72,10 @@ public abstract class BaseCanvas {
         Log.i(TAG, msg);
     }
 
+    protected void LOGD(String msg) {
+        Log.d(TAG, msg);
+    }
+
     /**
      * Takes a screen coordinate in the unit resolution and calculates a screen coordinate
      * proportional to current resolution
