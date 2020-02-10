@@ -73,6 +73,20 @@ public abstract class BaseCanvas {
     }
 
     /**
+     * Writes debug log on the console.
+     *
+     * @param msg Message to write
+     */
+    protected void LOGD(String msg) {
+
+        Log.d(TAG, msg);
+
+    }
+
+
+
+
+    /**
      * Takes a screen coordinate in the unit resolution and calculates a screen coordinate
      * proportional to current resolution
      *
