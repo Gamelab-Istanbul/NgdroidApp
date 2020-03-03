@@ -2,6 +2,7 @@ package istanbul.gamelab.ngdroid.base;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
 import com.ngdroidapp.NgApp;
 
@@ -16,6 +17,7 @@ import istanbul.gamelab.ngdroid.util.Utils;
 
 public abstract class BaseCanvas {
     protected NgApp root;
+    public Canvas canvas;
 
     protected final String TAG = this.getClass().getSimpleName();
 
@@ -90,4 +92,11 @@ public abstract class BaseCanvas {
         return newimage;
     }
 
+    protected void drawBitmap(Bitmap bitmap, int x, int y) {
+        canvas.drawBitmap(bitmap, x, y, null);
+    }
+
+    protected void drawBitmap(Bitmap bitmap, Rect src, Rect dst) {
+        canvas.drawBitmap(bitmap, src, dst, null);
+    }
 }

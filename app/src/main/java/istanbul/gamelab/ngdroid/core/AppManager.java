@@ -410,7 +410,10 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void onDraw(Canvas canvas) {
         ngapp.draw(canvas);
-        if (canvasmanager.isCanvasShown()) canvasmanager.currentCanvas.draw(canvas);
+        if (canvasmanager.isCanvasShown()) {
+            canvasmanager.currentCanvas.canvas = canvas;
+            canvasmanager.currentCanvas.draw(canvas);
+        }
         ngapp.gui.draw(canvas);
 //        if (ngapp.gui.isDialogueShown()) ngapp.gui.draw(canvas);
     }
