@@ -41,7 +41,7 @@ public class GameCanvas extends BaseCanvas {
     public void draw(Canvas canvas) {
         LOGI("draw");
 
-        canvas.drawBitmap(logo, logox, logoy, null);
+        drawBitmap(logo, logox, logoy);
     }
 
     public void keyPressed(int key) {
