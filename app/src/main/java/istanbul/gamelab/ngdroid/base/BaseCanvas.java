@@ -2,6 +2,8 @@ package istanbul.gamelab.ngdroid.base;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.ngdroidapp.NgApp;
@@ -18,11 +20,15 @@ import istanbul.gamelab.ngdroid.util.Utils;
 public abstract class BaseCanvas {
     protected NgApp root;
     public Canvas canvas;
+    private Paint font;
 
     protected final String TAG = this.getClass().getSimpleName();
 
     public BaseCanvas(NgApp ngApp) {
         root = ngApp;
+        font = new Paint();
+        font.setTextSize(48);
+        font.setColor(Color.WHITE);
     }
 
     public abstract void setup();
@@ -107,5 +113,45 @@ public abstract class BaseCanvas {
 
     protected void drawBitmap(Bitmap bitmap, Rect src, Rect dst) {
         canvas.drawBitmap(bitmap, src, dst, null);
+    }
+
+    protected void drawText(String text, int x, int y) {
+        canvas.drawText(text, x, y, font);
+    }
+
+    /**
+     * This method sets the drawing color.
+     *
+     * @param color int value of the color.
+     */
+    protected void setColor(int color) {
+        font.setColor(color);
+    }
+
+    /**
+     * This method gets the drawing color.
+     *
+     * @return int value of the color.
+     */
+    protected int getColor() {
+        return font.getColor();
+    }
+
+    /**
+     * This method sets the font size.
+     *
+     * @param size font size
+     */
+    protected void setTextSize(int size) {
+        font.setTextSize(size);
+    }
+
+    /**
+     * This method returns the font size.
+     *
+     * @return font size
+     */
+    protected float getTextSize() {
+        return font.getTextSize();
     }
 }
