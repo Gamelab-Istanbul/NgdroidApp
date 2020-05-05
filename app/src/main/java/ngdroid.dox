@@ -1,0 +1,65 @@
+/*! \mainpage Overview
+ *
+ * <h1>Introduction</h1>
+ *
+ * Ngdroid is a fast running Android game engine written in Java. It is a lightweight engine with a small footprint on the device. The project is an open source project that can be found on Github page <a href="https://github.com/Gamelab-Istanbul/NgdroidApp"><b>https://github.com/Gamelab-Istanbul/NgdroidApp</b></a>
+ *
+ * The engine is designed to use in 2D mobile games development. It uses the Android's Canvas class as renderer. Thus, it provides all the functionality to draw images, primitives, custom shapes, texts and a number of other graphic tools.
+ *
+ * The open source project published on Github is an Android Studio project. It is constructed as a framework including the engine and the game classes. The entry point from the operating system is the 'GameActivity' class. It holds a layout to manage drawings and an AppManager. The AppManager is the core part of the engine. AppManager consists of a game loop, a SurfaceView mapped onto the layout and a GameCanvas that draws on the SurfaceView. Developers can write their game codes into GameCanvas, MenuCanvas and other canvas classes with extending BaseCanvas. The implementation of the engine is described on the <a href="architecture.html"><b>Architecture</b></a> page.
+ *
+ * Alongside the 2D mobile games development, Ngdroid is also widely and heavily used in programming training. That's why, it is developed with simplicity and usability in mind. In accordance with it's design purposes, Ngdroid has 2 drawing modes: Direct Mode and Immediate Mode.
+ *
+ * Direct Mode uses Android's Canvas class' own drawing functions. It provides all core functionality and power of the operating system. Direct Mode is mainly used in professional game development. More information about Direct Mode can be found at <a href="direct_mode.html"><b>Direct Mode Overview</b></a>
+ *
+ * Immediate Mode is developed for programming education. It provides simpler functions. Most of the functions are not overloaded too much and have up to 1 or 2 parameters. These functions have an opengl-like notation. Information about Immediate Mode is available at <a href="immediate_mode.html"><b>Immediate Mode Overview</b></a> page.
+ *
+ * Ngdroid provides an addon infrastructure for extending additional functionality. Developers can write their addons extending BaseAddon class. Thus they can use the common functions across all their classes and across theirs all games. Some official addons are added into the project. A number of other addons can be found freely on the project website and on Github. Detailed information about writing Ngdroid addons is discussed at the <a href="extending.html"><b>Extending</b></a> section.
+ *
+ *
+ * \page architecture Architecture
+ *
+ * The entrance point of the Ngdroid from the operating system is the GameActivity class. Activity class has 2 important components:
+ * > -# Game Layout\n
+ * > -# AppManager
+ *
+ * After the OS calling the activity class, GameActivity does first create a layout to show views. Due to need of drawing game graphics, the layout is a full screen layout. GameActivity then fires AppManager class up, which is the core part of the system.
+ *
+ *\n
+ * AppManager consists of a number of functionalities and 3 main parts;
+ * > -# SurfaceView\n
+ * > -# CanvasManager -> CurrentCanvas\n
+ * > -# Main Loop\n
+ *
+ * SurfaceView is an Android view, where developers can draw pixel level graphics. Ngdroid maps this SurfaceView onto the layout. Thus, whatever drawn on the view would be shown on the screen.
+ * 
+ * Canvas Manager manages the canvasses. It brings the current canvas front and delete previous canvas from the memory. Current canvas draws on the screen and receives the user input.
+ *
+ * Main loop is the engine part of the Ngdroid system. It fires the current canvas's update and draw methods.
+ *
+ * In summary, main loop calls the current canvas, current canvas draws on the SurfaceView and SurfaceView shown on the screen. Then main loop starts the next frame.
+ *
+ * New Ngdroid developers can open the GameCanvas and start to write theirs game codes after cloning the repo.
+ * 
+ * \page direct_mode Direct Mode
+ *
+ * Ngdroid's Direct Mode uses Android's Canvas class as core renderer. Thus it provides all the graphics functionality that the operating system supplies. The canvas object of the BaseCanvas is an instance of the android.graphics.Canvas. The developers can check Canvas class documentation at <a href="https://developer.android.com/reference/android/graphics/Canvas">https://developer.android.com/reference/android/graphics/Canvas</a> for further information.
+ *
+ * All the methods of the Canvas class can be reached by the canvas object. For example, an image can be drawn by canvas.drawBitmap(...) method or string can be drawn on the screen by canvas.drawText(...) method.
+ *
+ * \page immediate_mode Immediate Mode
+ *
+ * Ngdroid's Immediate Mode is designed for teaching computer programming to the students. It has an OpenGl-like notation. The notation is simpler and most of the methods have up to 1-2 parameters.
+ *
+ * For example, drawing an image written in two lines:
+ * > translate(x, y);\n
+ * > drawImage(image);
+ *
+ *
+ * \page extending Extending
+ *
+ * Developers can extend Ngdroid by writing addons. Thus they can use theirs codes accross theirs multiple apps. they can also share these addons on the internet for the benefit of the other developers. A number of Ngdroid addons can be found on Github and on the official website of Ngdroid engine.
+ *
+ * More information about writing Ngdroid addons will be shared here soon.
+ */
+
