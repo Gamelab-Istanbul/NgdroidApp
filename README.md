@@ -24,6 +24,8 @@ When you want to generate your own APK;
 - Modify the app/build.graddle and
 - Modify AndroidManifest.xml.
 
+More information about Ngdroid Engine can be found at [https://ngdroid.gamelab.istanbul/](https://ngdroid.gamelab.istanbul/)
+
 There are still a lot of rooms to develop. Contributions are really appreciated.
 
 This framework is licenced with MIT licence.
