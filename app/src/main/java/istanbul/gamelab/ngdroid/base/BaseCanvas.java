@@ -26,6 +26,9 @@ public abstract class BaseCanvas {
     private int posx, posy;
     private Vector<Integer> posvec;
 
+    // The Rect to be used in the calculation of string width and height.
+    private Rect textbound;
+
 
     protected final String TAG = this.getClass().getSimpleName();
 
@@ -39,6 +42,10 @@ public abstract class BaseCanvas {
         posvec = new Vector();
         posvec.add(0);
         posvec.add(0);
+
+        // Initialization of the rectangle that we will use as helper in the calculations
+        // of the dimensions of the given text strings.
+        textbound = new Rect();
     }
 
     public abstract void setup();
@@ -169,6 +176,38 @@ public abstract class BaseCanvas {
         return font.getTextSize();
     }
 
+    /**
+     * Returns the width of the string sent as parameter. The width is measured in pixels using the
+     * face and the size of the last font set. Written by @iremerus
+     *
+     * @param text The string for which the width will be calculated.
+     * @return The width of the string in pixel numbers.
+     */
+    protected int getStringWidth(String text) {
+        // We propogate the textbound Rect we defined, with the position and dimension data of the
+        // text, calculated using the current font.
+        font.getTextBounds(text, 0, text.length(), textbound);
+
+        // Returns the calculated and propogated width of the textbound Rect.
+        return textbound.width();
+    }
+
+    /**
+     *  Returns the height of the string sent as parameter. The height is measured in pixels using
+     *  the face and the size of the last font set. Written by @iremerus
+     *
+     * @param text The string for which the height will be calculated.
+     * @return The height of the string in pixel numbers.
+     */
+    protected int getStringHeight(String text) {
+        // We propogate the textbound Rect we defined, with the position and dimension data of the
+        // text, calculated using the current font.
+        font.getTextBounds(text, 0, text.length(), textbound);
+
+        // Returns the calculated and propogated height of the textbound Rect.
+        return textbound.height();
+    }
+
     protected void setPosition(int x, int y) {
         posvec.set(posvec.size() - 2, x);
         posvec.set(posvec.size() - 1, y);
@@ -205,5 +244,23 @@ public abstract class BaseCanvas {
         posvec.remove(posvec.size() - 1);
         posvec.remove(posvec.size() - 1);
         canvas.restore();
+    }
+
+    /**
+     * Returns the font being used.
+     *
+     * @return The font used.
+     */
+    protected Paint getFont()  {
+        return font;
+    }
+
+    /**
+     * Sets a new font on top of the old one. This font will be used in drawString operations.
+     *
+     * @param newFont New font to be used.
+     */
+    protected void setFont(Paint newFont) {
+        font = newFont;
     }
 }
