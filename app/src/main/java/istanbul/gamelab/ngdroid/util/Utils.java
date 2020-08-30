@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
 //import android.support.v7.app.AlertDialog;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -17,6 +18,7 @@ import com.ngdroidapp.NgApp;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.util.Locale;
 import java.util.Vector;
 
@@ -53,6 +55,16 @@ public class Utils {
         return image;
     }
 
+    /**
+     * Loads a true type font from the /assets/fonts folder.
+     *
+     * @param ngApp The root app of the caller class
+     * @param fontPath Path of the true type font to load. The font should be stored under /assets/fonts folder
+     * @return The loaded true type font
+     */
+    public static Typeface loadFont(NgApp ngApp, String fontPath) {
+        return Typeface.createFromAsset(ngApp.activity.getAssets(), "fonts/" + fontPath);
+    }
 
     /**
      * Checks if 2 Android Rect objects are colliding or not.

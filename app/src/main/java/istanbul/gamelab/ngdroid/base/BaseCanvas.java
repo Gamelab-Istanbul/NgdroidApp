@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 
 import com.ngdroidapp.NgApp;
 
@@ -117,12 +118,26 @@ public abstract class BaseCanvas {
         return root.appManager.scaleNum(number);
     }
 
-
+    /**
+     * Loads an immutable image from the /assets/images folder.
+     *
+     * @param imagePath Path of the image to load. The image should be stored under /assets/images folder
+     * @return The immutable image
+     */
     protected Bitmap loadImage(String imagePath) {
-        Bitmap newimage;
-        newimage = Utils.loadImage(root, imagePath);
-        return newimage;
+        return Utils.loadImage(root, imagePath);
     }
+
+    /**
+     * Loads a true type font from the /assets/fonts folder.
+     *
+     * @param fontPath Path of the true type font to load. The font should be stored under /assets/fonts folder
+     * @return The loaded true type font
+     */
+    protected Typeface loadFont(String fontPath) {
+        return Utils.loadFont(root, fontPath);
+    }
+
 
     protected void drawBitmap(Bitmap bitmap, int x, int y) {
         canvas.drawBitmap(bitmap, x, y, null);
