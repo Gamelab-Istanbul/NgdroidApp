@@ -138,6 +138,41 @@ public abstract class BaseCanvas {
         return Utils.loadFont(root, fontPath);
     }
 
+    /**
+     * Scales the images drawn on the device from fullhd to the resolution being used by creating a
+     * new matrix.
+     */
+    public void startDraw() {
+        pushMatrix();
+        canvas.scale((float)getWidth() / getUnitWidth(), (float)getHeight() / getUnitHeight());
+    }
+
+    /**
+     * Closes the matrix created to scale the images according to the resolution of the screen.
+     */
+    public void endDraw() {
+        popMatrix();
+    }
+
+    /**
+     * Scales the x values of the place that is touched from fullhd to the resolution of the screen.
+     *
+     * @param x The x-coordinate of the place that is touched that is sent to be scaled.
+     * @return Scaled x-coordinate
+     */
+    public int scaleTouchX(int x) {
+        return (int)((x * getUnitWidth()) / getWidth());
+    }
+
+    /**
+     * Scales the y values of the place that is touched from fullhd to the resolution of the screen.
+     *
+     * @param y The y-coordinate of the place that is touched that is sent to be scaled.
+     * @return Scaled y-coordinate
+     */
+    public int scaleTouchY(int y) {
+        return (int)((y * getUnitHeight()) / getHeight());
+    }
 
     protected void drawBitmap(Bitmap bitmap, int x, int y) {
         canvas.drawBitmap(bitmap, x, y, null);

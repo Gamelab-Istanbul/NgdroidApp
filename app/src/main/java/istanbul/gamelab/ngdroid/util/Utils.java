@@ -47,7 +47,7 @@ public class Utils {
     public static Bitmap loadImage(NgApp ngApp, String imagePath) {
         Bitmap image;
         try {
-            InputStream istr = ngApp.activity.getAssets().open("images/" + imagePath);
+            InputStream istr = ngApp.activity.getAssets().open(ngApp.appManager.getImagePath() + imagePath);
             image = BitmapFactory.decodeStream(istr);
         } catch(IOException ex) {
             return null;
