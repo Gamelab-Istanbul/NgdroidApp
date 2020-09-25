@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 
 import com.ngdroidapp.NgApp;
 
@@ -26,6 +27,9 @@ public abstract class BaseCanvas {
     private int posx, posy;
     private Vector<Integer> posvec;
 
+    // The Rect to be used in the calculation of string width and height.
+    private Rect textbound;
+
 
     protected final String TAG = this.getClass().getSimpleName();
 
@@ -39,6 +43,10 @@ public abstract class BaseCanvas {
         posvec = new Vector();
         posvec.add(0);
         posvec.add(0);
+
+        // Initialization of the rectangle that we will use as helper in the calculations
+        // of the dimensions of the given text strings.
+        textbound = new Rect();
     }
 
     public abstract void setup();
@@ -110,11 +118,60 @@ public abstract class BaseCanvas {
         return root.appManager.scaleNum(number);
     }
 
-
+    /**
+     * Loads an immutable image from the /assets/images folder.
+     *
+     * @param imagePath Path of the image to load. The image should be stored under /assets/images folder
+     * @return The immutable image
+     */
     protected Bitmap loadImage(String imagePath) {
-        Bitmap newimage;
-        newimage = Utils.loadImage(root, imagePath);
-        return newimage;
+        return Utils.loadImage(root, imagePath);
+    }
+
+    /**
+     * Loads a true type font from the /assets/fonts folder.
+     *
+     * @param fontPath Path of the true type font to load. The font should be stored under /assets/fonts folder
+     * @return The loaded true type font
+     */
+    protected Typeface loadFont(String fontPath) {
+        return Utils.loadFont(root, fontPath);
+    }
+
+    /**
+     * Scales the images drawn on the device from fullhd to the resolution being used by creating a
+     * new matrix.
+     */
+    public void startDraw() {
+        pushMatrix();
+        canvas.scale((float)getWidth() / getUnitWidth(), (float)getHeight() / getUnitHeight());
+    }
+
+    /**
+     * Closes the matrix created to scale the images according to the resolution of the screen.
+     */
+    public void endDraw() {
+        popMatrix();
+    }
+
+    /**
+     * Scales the x values of the place that is touched from fullhd to the resolution of the screen.
+     *
+     * @param x The x-coordinate of the place that is touched that is sent to be scaled.
+     * @return Scaled x-coordinate
+     */
+    public int scaleTouchX(int x) {
+        return (int)((x * getUnitWidth()) / getWidth());
+    }
+
+    /**
+     * Scales the y values of the place that is touched from fullhd to the resolution of the screen.
+     *
+     * @param y The y-coordinate of the place that is touched that is sent to be scaled.
+     * @return Scaled y-coordinate
+     */
+    public int scaleTouchY(int y) {
+        return (int)((y * getUnitHeight()) / getHeight());
     }
 
     protected void drawBitmap(Bitmap bitmap, int x, int y) {
@@ -169,6 +226,38 @@ public abstract class BaseCanvas {
         return font.getTextSize();
     }
 
+    /**
+     * Returns the width of the string sent as parameter. The width is measured in pixels using the
+     * face and the size of the last font set. Written by @iremerus
+     *
+     * @param text The string for which the width will be calculated.
+     * @return The width of the string in pixel numbers.
+     */
+    protected int getStringWidth(String text) {
+        // We propogate the textbound Rect we defined, with the position and dimension data of the
+        // text, calculated using the current font.
+        font.getTextBounds(text, 0, text.length(), textbound);
+
+        // Returns the calculated and propogated width of the textbound Rect.
+        return textbound.width();
+    }
+
+    /**
+     *  Returns the height of the string sent as parameter. The height is measured in pixels using
+     *  the face and the size of the last font set. Written by @iremerus
+     *
+     * @param text The string for which the height will be calculated.
+     * @return The height of the string in pixel numbers.
+     */
+    protected int getStringHeight(String text) {
+        // We propogate the textbound Rect we defined, with the position and dimension data of the
+        // text, calculated using the current font.
+        font.getTextBounds(text, 0, text.length(), textbound);
+
+        // Returns the calculated and propogated height of the textbound Rect.
+        return textbound.height();
+    }
+
     protected void setPosition(int x, int y) {
         posvec.set(posvec.size() - 2, x);
         posvec.set(posvec.size() - 1, y);
@@ -205,5 +294,23 @@ public abstract class BaseCanvas {
         posvec.remove(posvec.size() - 1);
         posvec.remove(posvec.size() - 1);
         canvas.restore();
+    }
+
+    /**
+     * Returns the font being used.
+     *
+     * @return The font used.
+     */
+    protected Paint getFont()  {
+        return font;
+    }
+
+    /**
+     * Sets a new font on top of the old one. This font will be used in drawString operations.
+     *
+     * @param newFont New font to be used.
+     */
+    protected void setFont(Paint newFont) {
+        font = newFont;
     }
 }

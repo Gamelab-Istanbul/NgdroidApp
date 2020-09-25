@@ -26,6 +26,7 @@ import istanbul.gamelab.ngdroid.util.Log;
 public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
     public static int STATE_RUNNING = 0, STATE_PAUSED = 1;
     public static final int RESOLUTION_UHD = 0, RESOLUTION_QHD = 1, RESOLUTION_FULLHD = 2, RESOLUTION_HD = 3, RESOLUTION_QFHD = 4, RESOLUTION_WVGA = 5, RESOLUTION_HVGA = 6;
+    public static final int SCREENSCALING_NONE = 0, SCREENSCALING_AUTO = 1, SCREENSCALING_MIPMAP = 2;
 
     private static final String TAG = AppManager.class.getSimpleName();
     private MainThread thread;
@@ -40,6 +41,8 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
     private int tmoi, tmoid, tmox, tmoy;
     public int scaleresmult, scaleresdiv, scaleresmultunit, scaleresdivunit;
     private final Runtime runtime = Runtime.getRuntime();
+    private int screenscaling;
+    private String imagepath;
 
     public AppManager(BaseActivity baseActivity) {
         super(baseActivity);
@@ -53,6 +56,9 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
         setupScreenSize(baseActivity);
         setupScreenResolution(screenwidth, screenheight);
         setUnitResolution(0);
+        //Our new default screen scaling method is SCREENSCALING_AUTO
+        screenscaling = SCREENSCALING_AUTO;
+        setUpImagePath();
         max_touch_num = 10;
         touch_oldx = new int[max_touch_num];
         touch_oldy = new int[max_touch_num];
@@ -151,6 +157,56 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
         unitresolution = unitResolution;
         scaleresmultunit = resolution_multipliers[unitresolution][0];
         scaleresdivunit = resolution_multipliers[unitresolution][1];
+    }
+
+    /**
+     * Sets the scaling type. Thanks to @oykuerus for the mipmapping algorithm.
+     *
+     * @param screenScalingType SCREENSCALING_NONE, SCREENSCALING_AUTO or SCREENSCALING_MIPMAP
+     */
+    public void setScreenScaling(int screenScalingType) {
+        screenscaling = screenScalingType;
+        setUpImagePath();
+    }
+
+    public int getScreenScaling() {
+        return screenscaling;
+    }
+
+    /**
+     * Setups automatically imagepath to be used according to the chosen type of scaling.
+     */
+    private void setUpImagePath() {
+        if(screenscaling == SCREENSCALING_MIPMAP) {
+            if(resolution == RESOLUTION_UHD) imagepath = "mipmaps/0_uhd/";
+            if(resolution == RESOLUTION_QHD) imagepath = "mipmaps/1_qhd/";
+            if(resolution == RESOLUTION_FULLHD) imagepath = "mipmaps/2_fullhd/";
+            if(resolution == RESOLUTION_HD) imagepath = "mipmaps/3_hd/";
+            if(resolution == RESOLUTION_QFHD) imagepath = "mipmaps/4_qfhd/";
+            if(resolution == RESOLUTION_WVGA) imagepath = "mipmaps/5_wvga/";
+            if(resolution == RESOLUTION_HVGA) imagepath = "mipmaps/6_hvga/";
+        } else {
+            imagepath = "images/";
+        }
+    }
+
+    /**
+     * The user can cancel the automatical path and can use his/her own path. One can set his/her
+     * own path after sending it to this function as a parameter. Only folder name should be sent,
+     * without leading and ending slashes.
+     *
+     * @param imagePath
+     */
+    public void setImagePath(String imagePath) {
+        imagepath = imagePath + "/";
+    }
+
+    /**
+     * Returns the image path used by the app.
+     * @return image path
+     */
+    public String getImagePath() {
+        return imagepath;
     }
 
     public int getUnitResolution() {
@@ -334,8 +390,13 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
                 } else {
                     if (!ngapp.gui.isInitialized() || !ngapp.gui.isDialogueShown()) {
                         if(istoucheventsenabled) {
-                            if (canvasmanager.isCanvasShown())
+                            if (canvasmanager.isCanvasShown()) {
+                                if(screenscaling > SCREENSCALING_NONE) {
+                                    touch_x = canvasmanager.currentCanvas.scaleTouchX(touch_x);
+                                    touch_y = canvasmanager.currentCanvas.scaleTouchY(touch_y);
+                                }
                                 canvasmanager.currentCanvas.touchDown(touch_x, touch_y, touch_id);
+                            }
                             else ngapp.touchDown(touch_x, touch_y, touch_id);
                         }
                     }
@@ -356,8 +417,13 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
                         } else {
                             if (!ngapp.gui.isInitialized() || !ngapp.gui.isDialogueShown()) {
                                 if(istoucheventsenabled) {
-                                    if (canvasmanager.isCanvasShown())
+                                    if (canvasmanager.isCanvasShown()) {
+                                        if(screenscaling > SCREENSCALING_NONE) {
+                                            touch_x = canvasmanager.currentCanvas.scaleTouchX(tmox);
+                                            touch_y = canvasmanager.currentCanvas.scaleTouchY(tmoy);
+                                        }
                                         canvasmanager.currentCanvas.touchMove(tmox, tmoy, tmoid);
+                                    }
                                     else ngapp.touchMove(tmox, tmoy, tmoid);
                                 }
                             }
@@ -383,8 +449,13 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
                 } else {
                     if (!ngapp.gui.isInitialized() || !ngapp.gui.isDialogueShown()) {
                         if(istoucheventsenabled) {
-                            if (canvasmanager.isCanvasShown())
+                            if (canvasmanager.isCanvasShown()) {
+                                if(screenscaling > SCREENSCALING_NONE) {
+                                    touch_x = canvasmanager.currentCanvas.scaleTouchX(touch_x);
+                                    touch_y = canvasmanager.currentCanvas.scaleTouchY(touch_y);
+                                }
                                 canvasmanager.currentCanvas.touchUp(touch_x, touch_y, touch_id);
+                            }
                             else ngapp.touchUp(touch_x, touch_y, touch_id);
                         }
                     }
@@ -412,7 +483,9 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
         ngapp.draw(canvas);
         if (canvasmanager.isCanvasShown()) {
             canvasmanager.currentCanvas.canvas = canvas;
+            if (screenscaling == SCREENSCALING_AUTO) canvasmanager.currentCanvas.startDraw();
             canvasmanager.currentCanvas.draw(canvas);
+            if (screenscaling == SCREENSCALING_AUTO) canvasmanager.currentCanvas.endDraw();
         }
         ngapp.gui.draw(canvas);
 //        if (ngapp.gui.isDialogueShown()) ngapp.gui.draw(canvas);
