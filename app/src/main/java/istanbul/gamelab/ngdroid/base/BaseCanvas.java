@@ -11,6 +11,7 @@ import com.ngdroidapp.NgApp;
 
 import java.util.Vector;
 
+import istanbul.gamelab.ngdroid.core.AppManager;
 import istanbul.gamelab.ngdroid.util.Log;
 import istanbul.gamelab.ngdroid.util.Utils;
 
@@ -73,10 +74,12 @@ public abstract class BaseCanvas {
     public abstract void hideNotify();
 
     public int getWidth() {
-        return root.appManager.getScreenWidth();
+        if (root.appManager.getScreenScaling() == AppManager.SCREENSCALING_AUTO) return getUnitWidth();
+        return getCurrentWidth();
     }
     public int getHeight() {
-        return root.appManager.getScreenHeight();
+        if (root.appManager.getScreenScaling() == AppManager.SCREENSCALING_AUTO) return getUnitHeight();
+        return getCurrentHeight();
     }
 
     public int getWidthHalf() {
@@ -88,6 +91,8 @@ public abstract class BaseCanvas {
 
     public int getUnitWidth() { return root.appManager.getWidthUnit();}
     public int getUnitHeight() { return root.appManager.getHeightUnit();}
+    public int getCurrentWidth() { return root.appManager.getScreenWidth();}
+    public int getCurrentHeight() { return root.appManager.getScreenHeight();}
 
     /**
      * Writes information log on the console.
@@ -144,7 +149,7 @@ public abstract class BaseCanvas {
      */
     public void startDraw() {
         pushMatrix();
-        canvas.scale((float)getWidth() / getUnitWidth(), (float)getHeight() / getUnitHeight());
+        canvas.scale((float)getCurrentWidth() / getUnitWidth(), (float)getCurrentHeight() / getUnitHeight());
     }
 
     /**
@@ -161,7 +166,7 @@ public abstract class BaseCanvas {
      * @return Scaled x-coordinate
      */
     public int scaleTouchX(int x) {
-        return (int)((x * getUnitWidth()) / getWidth());
+        return (int)((x * getUnitWidth()) / getCurrentWidth());
     }
 
     /**
@@ -171,7 +176,7 @@ public abstract class BaseCanvas {
      * @return Scaled y-coordinate
      */
     public int scaleTouchY(int y) {
-        return (int)((y * getUnitHeight()) / getHeight());
+        return (int)((y * getUnitHeight()) / getCurrentHeight());
     }
 
     protected void drawBitmap(Bitmap bitmap, int x, int y) {
