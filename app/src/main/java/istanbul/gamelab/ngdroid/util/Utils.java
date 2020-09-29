@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
-//import android.support.v7.app.AlertDialog;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.VibrationEffect;
