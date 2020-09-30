@@ -174,7 +174,6 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
         unitresolution = unitResolution;
         scaleresmultunit = resolution_multipliers[unitresolution][0];
         scaleresdivunit = resolution_multipliers[unitresolution][1];
-
         setupTempScreen();
     }
 

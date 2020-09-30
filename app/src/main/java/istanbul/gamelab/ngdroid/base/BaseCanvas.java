@@ -186,6 +186,7 @@ public abstract class BaseCanvas {
         return (int)((y * getUnitHeight()) / getCurrentHeight());
     }
 
+
     protected void drawBitmap(Bitmap bitmap, int x, int y) {
         if (root.appManager.getScreenScaling() == AppManager.SCREENSCALING_AUTOWIDE) {
             if (root.appManager.getOrientation() == AppManager.ORIENTATION_LANDSCAPE) {
