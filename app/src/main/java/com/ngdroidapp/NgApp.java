@@ -57,7 +57,7 @@ public class NgApp extends BaseApp {
     public void setup() {
         appManager.setUnitResolution(AppManager.RESOLUTION_FULLHD);
         appManager.setScreenScaling(AppManager.SCREENSCALING_AUTO);
-        appManager.setFrameRate(20);
+        appManager.setFrameRate(24);
 
         MenuCanvas mc = new MenuCanvas(this);
         canvasManager.setCurrentCanvas(mc);
