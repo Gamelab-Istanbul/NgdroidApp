@@ -26,7 +26,8 @@ import istanbul.gamelab.ngdroid.util.Log;
 public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
     public static int STATE_RUNNING = 0, STATE_PAUSED = 1;
     public static final int RESOLUTION_UHD = 0, RESOLUTION_QHD = 1, RESOLUTION_FULLHD = 2, RESOLUTION_HD = 3, RESOLUTION_QFHD = 4, RESOLUTION_WVGA = 5, RESOLUTION_HVGA = 6;
-    public static final int SCREENSCALING_NONE = 0, SCREENSCALING_AUTO = 1, SCREENSCALING_MIPMAP = 2;
+    public static final int SCREENSCALING_NONE = 0, SCREENSCALING_MIPMAP = 1, SCREENSCALING_AUTO = 2, SCREENSCALING_AUTOWIDE = 3;
+    public static final int ORIENTATION_LANDSCAPE = 0, ORIENTATION_PORTRAIT = 1;
 
     private static final String TAG = AppManager.class.getSimpleName();
     private MainThread thread;
@@ -35,6 +36,9 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
     private boolean initialstart;
     private boolean istoucheventsenabled;
     private int state, screenwidth, screenheight, screenwidthhalf, screenheighthalf;
+    private int tempwidth, tempheight;
+    private float tempcoef;
+    private int orientation;
     private int resolution, unitresolution;
     private int max_touch_num, touch_oldx[], touch_oldy[];
     private int touch_num, touch_x, touch_y, touch_index, touch_id, touch_action;
@@ -55,7 +59,7 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
         state = STATE_RUNNING;
         setupScreenSize(baseActivity);
         setupScreenResolution(screenwidth, screenheight);
-        setUnitResolution(0);
+        setUnitResolution(RESOLUTION_FULLHD);
         //Our new default screen scaling method is SCREENSCALING_AUTO
         screenscaling = SCREENSCALING_AUTO;
         setUpImagePath();
@@ -114,7 +118,9 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
 
     private void setupScreenResolution(int screenWidth, int screenHeight) {
         int temp = 0;
+        orientation = ORIENTATION_PORTRAIT;
         if (screenwidth > screenHeight) {
+            orientation = ORIENTATION_LANDSCAPE;
             for (int i=0; i<resolution_sizes.length; i++) {
                 temp = resolution_sizes[i][0];
                 resolution_sizes[i][0] = resolution_sizes[i][1];
@@ -150,6 +156,17 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
         return resolution_sizes[unitresolution][1];
     }
 
+    public int getWidthTemp() {
+        return tempwidth;
+    }
+
+    public int getHeightTemp() {
+        return tempheight;
+    }
+    public float getTempCoef() {
+        return tempcoef;
+    }
+
     public void setUnitResolution(int unitResolution) {
         if (unitResolution < 0 || unitResolution > RESOLUTION_HVGA) {
             return;
@@ -157,16 +174,26 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
         unitresolution = unitResolution;
         scaleresmultunit = resolution_multipliers[unitresolution][0];
         scaleresdivunit = resolution_multipliers[unitresolution][1];
+
+        setupTempScreen();
+    }
+
+    public int getOrientation() {
+        return orientation;
     }
 
     /**
      * Sets the scaling type. Thanks to @oykuerus for the mipmapping algorithm.
      *
-     * @param screenScalingType SCREENSCALING_NONE, SCREENSCALING_AUTO or SCREENSCALING_MIPMAP
+     * Please note that, SCREENSCALING_AUTOWIDE is in development stage. Use one of the other scaling
+     * types for instant.
+     *
+     * @param screenScalingType SCREENSCALING_NONE, SCREENSCALING_MIPMAP, SCREENSCALING_AUTO or SCREENSCALING_AUTOWIDE
      */
     public void setScreenScaling(int screenScalingType) {
         screenscaling = screenScalingType;
         setUpImagePath();
+        setupTempScreen();
     }
 
     public int getScreenScaling() {
@@ -187,6 +214,21 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
             if(resolution == RESOLUTION_HVGA) imagepath = "mipmaps/6_hvga/";
         } else {
             imagepath = "images/";
+        }
+    }
+
+    private void setupTempScreen() {
+        tempwidth = getWidthUnit();
+        tempheight = getHeightUnit();
+        tempcoef = 1;
+        if (screenscaling == SCREENSCALING_AUTOWIDE) {
+            if (orientation == ORIENTATION_LANDSCAPE) {
+                tempcoef = ((float)screenwidth * getHeightUnit() / screenheight) / getWidthUnit();
+                tempwidth *= tempcoef;
+            } else {
+                tempcoef = ((float)screenheight * getWidthUnit() / screenwidth) / getHeightUnit();
+                tempheight *= tempcoef;
+            }
         }
     }
 
@@ -483,9 +525,9 @@ public class AppManager extends SurfaceView implements SurfaceHolder.Callback {
         ngapp.draw(canvas);
         if (canvasmanager.isCanvasShown()) {
             canvasmanager.currentCanvas.canvas = canvas;
-            if (screenscaling == SCREENSCALING_AUTO) canvasmanager.currentCanvas.startDraw();
+            if (screenscaling >= SCREENSCALING_AUTO) canvasmanager.currentCanvas.startDraw();
             canvasmanager.currentCanvas.draw(canvas);
-            if (screenscaling == SCREENSCALING_AUTO) canvasmanager.currentCanvas.endDraw();
+            if (screenscaling >= SCREENSCALING_AUTO) canvasmanager.currentCanvas.endDraw();
         }
         ngapp.gui.draw(canvas);
 //        if (ngapp.gui.isDialogueShown()) ngapp.gui.draw(canvas);
