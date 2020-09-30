@@ -74,11 +74,11 @@ public abstract class BaseCanvas {
     public abstract void hideNotify();
 
     public int getWidth() {
-        if (root.appManager.getScreenScaling() == AppManager.SCREENSCALING_AUTO) return getUnitWidth();
+        if (root.appManager.getScreenScaling() >= AppManager.SCREENSCALING_AUTO) return getUnitWidth();
         return getCurrentWidth();
     }
     public int getHeight() {
-        if (root.appManager.getScreenScaling() == AppManager.SCREENSCALING_AUTO) return getUnitHeight();
+        if (root.appManager.getScreenScaling() >= AppManager.SCREENSCALING_AUTO) return getUnitHeight();
         return getCurrentHeight();
     }
 
@@ -91,6 +91,12 @@ public abstract class BaseCanvas {
 
     public int getUnitWidth() { return root.appManager.getWidthUnit();}
     public int getUnitHeight() { return root.appManager.getHeightUnit();}
+    public int getTempWidth() {
+        return root.appManager.getWidthTemp();
+    }
+    public int getTempHeight() {
+        return root.appManager.getHeightTemp();
+    }
     public int getCurrentWidth() { return root.appManager.getScreenWidth();}
     public int getCurrentHeight() { return root.appManager.getScreenHeight();}
 
@@ -149,7 +155,8 @@ public abstract class BaseCanvas {
      */
     public void startDraw() {
         pushMatrix();
-        canvas.scale((float)getCurrentWidth() / getUnitWidth(), (float)getCurrentHeight() / getUnitHeight());
+        canvas.scale((float)getCurrentWidth() / getTempWidth(), (float)getCurrentHeight() / getTempHeight());
+//        canvas.scale((float)getCurrentWidth() / getUnitWidth(), (float)getCurrentHeight() / getUnitHeight());
     }
 
     /**
@@ -179,11 +186,26 @@ public abstract class BaseCanvas {
         return (int)((y * getUnitHeight()) / getCurrentHeight());
     }
 
+
     protected void drawBitmap(Bitmap bitmap, int x, int y) {
+        if (root.appManager.getScreenScaling() == AppManager.SCREENSCALING_AUTOWIDE) {
+            if (root.appManager.getOrientation() == AppManager.ORIENTATION_LANDSCAPE) {
+                x *= root.appManager.getTempCoef();
+            } else {
+                y *= root.appManager.getTempCoef();
+            }
+        }
         canvas.drawBitmap(bitmap, x, y, null);
     }
 
     protected void drawBitmap(Bitmap bitmap, Rect src, Rect dst) {
+        if (root.appManager.getScreenScaling() == AppManager.SCREENSCALING_AUTOWIDE) {
+            if (root.appManager.getOrientation() == AppManager.ORIENTATION_LANDSCAPE) {
+                dst.left *= root.appManager.getTempCoef();
+            } else {
+                dst.top *= root.appManager.getTempCoef();
+            }
+        }
         canvas.drawBitmap(bitmap, src, dst, null);
     }
 
@@ -192,6 +214,13 @@ public abstract class BaseCanvas {
     }
 
     protected void drawText(String text, int x, int y) {
+        if (root.appManager.getScreenScaling() == AppManager.SCREENSCALING_AUTOWIDE) {
+            if (root.appManager.getOrientation() == AppManager.ORIENTATION_LANDSCAPE) {
+                x *= root.appManager.getTempCoef();
+            } else {
+                y *= root.appManager.getTempCoef();
+            }
+        }
         canvas.drawText(text, x, y, font);
     }
 
