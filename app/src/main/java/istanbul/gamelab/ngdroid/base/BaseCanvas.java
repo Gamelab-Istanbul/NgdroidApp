@@ -99,6 +99,9 @@ public abstract class BaseCanvas {
     }
     public int getCurrentWidth() { return root.appManager.getScreenWidth();}
     public int getCurrentHeight() { return root.appManager.getScreenHeight();}
+    public int getOrientation() {
+        return root.appManager.getOrientation();
+    }
 
     /**
      * Writes information log on the console.
