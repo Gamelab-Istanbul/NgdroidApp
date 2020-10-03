@@ -27,6 +27,10 @@ public abstract class BaseCanvas {
     private Paint font;
     private int posx, posy;
     private Vector<Integer> posvec;
+    private int tempx, tempy, tempx2, tempy2;
+
+    public static final int ALIGN_LEFT = 0, ALIGN_CENTER = 1, ALIGN_RIGHT = 2;
+    public static final int ALIGN_TOP = 0, ALIGN_BOTTOM = 2;
 
     // The Rect to be used in the calculation of string width and height.
     private Rect textbound;
@@ -190,6 +194,14 @@ public abstract class BaseCanvas {
     }
 
 
+    /**
+     * Draws the given bitmap on the screen. The left-upper corner of the bitmap will be drawn just
+     * on {x, y} point of the screen
+     *
+     * @param bitmap The image to be drawn
+     * @param x Left coordinate of the image
+     * @param y Top coordinate of the image
+     */
     protected void drawBitmap(Bitmap bitmap, int x, int y) {
         if (root.appManager.getScreenScaling() == AppManager.SCREENSCALING_AUTOWIDE) {
             if (root.appManager.getOrientation() == AppManager.ORIENTATION_LANDSCAPE) {
@@ -201,12 +213,70 @@ public abstract class BaseCanvas {
         canvas.drawBitmap(bitmap, x, y, null);
     }
 
+    // Please use this method with caution. When the aligment is set to center, right or bottom, the
+    // x coordinate may change on wide screens
+    protected void drawBitmap(Bitmap bitmap, int x, int y, int alignHor, int alignVer) {
+        if (root.appManager.getScreenScaling() == AppManager.SCREENSCALING_AUTOWIDE) {
+            if (root.appManager.getOrientation() == AppManager.ORIENTATION_LANDSCAPE) {
+                x *= root.appManager.getTempCoef();
+            } else {
+                y *= root.appManager.getTempCoef();
+            }
+        }
+        canvas.drawBitmap(bitmap, x - ((alignHor * bitmap.getWidth()) / 2), y - ((alignVer * bitmap.getHeight()) / 2), null);
+    }
+
+    /**
+     * Draws a subpart of an image onto the given part of the screen. The subimage and subscreen are
+     * represented by rectangles.
+     *
+     * @param bitmap The image to be drawn onto screen
+     * @param src The rectangle that determines the sub-part of the image
+     * @param dst The rectangle that determines the sub-part of the screen to draw onto.
+     */
     protected void drawBitmap(Bitmap bitmap, Rect src, Rect dst) {
         if (root.appManager.getScreenScaling() == AppManager.SCREENSCALING_AUTOWIDE) {
             if (root.appManager.getOrientation() == AppManager.ORIENTATION_LANDSCAPE) {
-                dst.left *= root.appManager.getTempCoef();
+                tempx = (int)(dst.left * root.appManager.getTempCoef());
+                tempx2 = tempx + dst.width();
+                dst.set(tempx, dst.top, tempx2, dst.bottom);
             } else {
-                dst.top *= root.appManager.getTempCoef();
+                tempy = (int)(dst.top * root.appManager.getTempCoef());
+                tempy2 = tempy + dst.height();
+                dst.set(dst.left, tempy, dst.bottom, tempy2);
+            }
+        }
+        canvas.drawBitmap(bitmap, src, dst, null);
+    }
+
+    // Please use this method with caution. When the aligment is set to center, right or bottom, the
+    // left coordinate of the destination rectangle may change on wide screens
+    protected void drawBitmap(Bitmap bitmap, Rect src, Rect dst, int alignHor, int alignVer) {
+        if (root.appManager.getScreenScaling() == AppManager.SCREENSCALING_AUTOWIDE) {
+            if (root.appManager.getOrientation() == AppManager.ORIENTATION_LANDSCAPE) {
+                if (alignHor == ALIGN_RIGHT) {
+                    tempx2 = (int)(dst.right * root.appManager.getTempCoef());
+                    tempx = tempx2 - dst.width();
+                } else if (alignHor == ALIGN_CENTER) {
+                    tempx = (int)(((dst.left + dst.right) / 2) * root.appManager.getTempCoef()) - (dst.width() / 2);
+                    tempx2 = tempx + dst.width();
+                } else {
+                    tempx = (int)(dst.left * root.appManager.getTempCoef());
+                    tempx2 = tempx + dst.width();
+                }
+                dst.set(tempx, dst.top, tempx2, dst.bottom);
+            } else {
+                if (alignVer == ALIGN_BOTTOM) {
+                    tempy2 = (int)(dst.bottom * root.appManager.getTempCoef());
+                    tempy = tempy2 - dst.height();
+                } else if (alignVer == ALIGN_CENTER) {
+                    tempy = (int)(((dst.top + dst.bottom) / 2) * root.appManager.getTempCoef()) - (dst.height() / 2);
+                    tempy2 = tempy + dst.height();
+                } else {
+                    tempy = (int)(dst.top * root.appManager.getTempCoef());
+                    tempy2 = tempy + dst.height();
+                }
+                dst.set(dst.left, tempy, dst.bottom, tempy2);
             }
         }
         canvas.drawBitmap(bitmap, src, dst, null);
@@ -216,12 +286,46 @@ public abstract class BaseCanvas {
         canvas.drawBitmap(bitmap, posvec.elementAt(posvec.size() - 2), posvec.elementAt(posvec.size() - 1), null);
     }
 
+    /**
+     * Draws a string onto the screen using the default font
+     *
+     * @param text The string to be drawn
+     * @param x Left coordinate of the text
+     * @param y Top coordinate of the text
+     */
     protected void drawText(String text, int x, int y) {
         if (root.appManager.getScreenScaling() == AppManager.SCREENSCALING_AUTOWIDE) {
             if (root.appManager.getOrientation() == AppManager.ORIENTATION_LANDSCAPE) {
                 x *= root.appManager.getTempCoef();
             } else {
                 y *= root.appManager.getTempCoef();
+            }
+        }
+        canvas.drawText(text, x, y, font);
+    }
+
+    protected void drawText(String text, int x, int y, int alignHor, int alignVer) {
+        if (root.appManager.getScreenScaling() == AppManager.SCREENSCALING_AUTOWIDE) {
+            if (root.appManager.getOrientation() == AppManager.ORIENTATION_LANDSCAPE) {
+                x *= root.appManager.getTempCoef();
+                if (alignHor > ALIGN_LEFT) x -= ((alignHor * getStringWidth(text)) / 2);
+            } else {
+                y *= root.appManager.getTempCoef();
+                if (alignHor > ALIGN_TOP) y -= ((alignVer * getStringHeight(text)) / 2);
+            }
+        }
+        canvas.drawText(text, x, y, font);
+    }
+
+    // This method is implemented to get rid of the cost of the string's width and height recalculations
+    protected void drawText(String text, int x, int y, int textw, int texth, int alignHor, int alignVer) {
+        if (root.appManager.getScreenScaling() == AppManager.SCREENSCALING_AUTOWIDE) {
+            if (root.appManager.getOrientation() == AppManager.ORIENTATION_LANDSCAPE) {
+                x *= root.appManager.getTempCoef();
+                if (alignHor > ALIGN_LEFT) x -= ((alignHor * textw) / 2);
+            } else {
+                y *= root.appManager.getTempCoef();
+                if (alignHor > ALIGN_TOP) y -= ((alignVer * texth) / 2);
             }
         }
         canvas.drawText(text, x, y, font);
@@ -315,6 +419,19 @@ public abstract class BaseCanvas {
     protected void translate(int dx, int dy) {
         posvec.set(posvec.size() - 2, posvec.elementAt(posvec.size() - 2) + dx);
         posvec.set(posvec.size() - 1, posvec.elementAt(posvec.size() - 1) + dy);
+    }
+
+    // rotate and scale functions should be tested in immediate mode
+    protected void rotate(float degrees, float px, float py) {
+        canvas.rotate(degrees, px, py);
+    }
+
+    protected void scale(float sx, float sy, float px, float py) {
+        canvas.scale(sx, sy, px, py);
+    }
+
+    protected void scale(float sx, float sy) {
+        canvas.scale(sx, sy);
     }
 
     protected void clearColor(int color) {
