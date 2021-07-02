@@ -84,9 +84,9 @@ public class Utils {
      * @param xRight1 Right x of the first rectangle
      * @param yBottom1 Bottom y of the first rectangle
      * @param xLeft2 Left x of the second rectangle
-     * @param yUp2 Top y of the first rectangle
-     * @param xRight2 Right x of the first rectangle
-     * @param yBottom2 Bottom y of the first rectangle
+     * @param yUp2 Top y of the second rectangle
+     * @param xRight2 Right x of the second rectangle
+     * @param yBottom2 Bottom y of the second rectangle
      * @return true if the two rectangles are colliding, false if not.
      */
     public static boolean checkCollision(int xLeft1, int yUp1, int xRight1, int yBottom1, int xLeft2, int yUp2, int xRight2, int yBottom2) {
@@ -100,7 +100,7 @@ public class Utils {
      * Checks pixel perfect collision.
      *
      * @param image1 The first Bitmap object
-     * @param image2 The secons Bitmap object
+     * @param image2 The second Bitmap object
      * @param rect1 The first Rect object
      * @param rect2 The second Rect object
      **/
