@@ -467,4 +467,20 @@ public abstract class BaseCanvas {
     protected void setFont(Paint newFont) {
         font = newFont;
     }
+
+    /**
+     * Checks if two images are colliding or not.
+     *
+     * @param image1 The first Bitmap object
+     * @param x1 x Left coordinate of the first image
+     * @param y1 y Top coordinate of the first image
+     * @param image2 The second Bitmap object
+     * @param x2 x Left coordinate of the second image
+     * @param y2 y Top coordinate of the second image
+     * @return true if the two images are colliding, false if not.
+     */
+    protected boolean checkCollision(Bitmap image1, int x1, int y1, Bitmap image2, int x2, int y2) {
+        return Utils.checkCollision(x1, y1, x1 + image1.getWidth(), y1 + image1.getHeight(),
+                x2, y2, x2 + image2.getWidth(), y2 + image2.getHeight());
+    }
 }
