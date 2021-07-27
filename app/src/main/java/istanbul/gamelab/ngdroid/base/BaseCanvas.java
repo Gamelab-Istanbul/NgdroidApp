@@ -340,6 +340,14 @@ public abstract class BaseCanvas {
         font.setColor(color);
     }
 
+    protected void setColor(int r, int g, int b, int a) {
+        font.setARGB(a, r, g, b);
+    }
+
+    protected void setColor(int r, int g, int b) {
+        font.setARGB(255, r, g, b);
+    }
+
     /**
      * This method gets the drawing color.
      *
@@ -397,6 +405,10 @@ public abstract class BaseCanvas {
 
         // Returns the calculated and propogated height of the textbound Rect.
         return textbound.height();
+    }
+
+    protected void setTextBold(boolean isBold) {
+        font.setFakeBoldText(isBold);
     }
 
     protected void setPosition(int x, int y) {
