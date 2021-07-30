@@ -97,7 +97,7 @@ public class Utils {
     }
 
     /**
-     * Checks pixel perfect collision.
+     * Checks pixel perfect collision. Thanks to @hsencan03 for the algorithm.
      *
      * @param image1 The first Bitmap object
      * @param image2 The second Bitmap object
